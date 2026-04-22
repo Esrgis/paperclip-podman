@@ -1,0 +1,9 @@
+
+node/
+
+.config/
+
+paperclip/node_modules/
+
+paperclip/.pnpm-store/
+

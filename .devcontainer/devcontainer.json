@@ -1,0 +1,19 @@
+{
+    "name": "Paperclip-Isolated-Env",
+    "build": {
+        "dockerfile": "Containerfile"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+    "remoteUser": "node",
+    "containerEnv": {
+        "PAPERCLIP_HOME": "/workspace/paperclip-data",
+        "XDG_CONFIG_HOME": "/workspace/.config"
+    },
+    "postCreateCommand": "cd /workspace/paperclip && pnpm install",
+    "postStartCommand": "cd /workspace/paperclip && PAPERCLIP_HOME=/workspace/paperclip-data pnpm dev"
+    "settings": {
+        "telemetry.telemetryLevel": "off"
+    },
+    "extensions": []
+}
