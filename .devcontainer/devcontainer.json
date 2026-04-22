@@ -6,12 +6,15 @@
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
+    "mounts": [
+        "source=paperclip-data,target=/home/node/paperclip-data,type=volume"
+    ],
     "containerEnv": {
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
         "XDG_CONFIG_HOME": "/workspace/.config"
     },
-    "postCreateCommand": "cd /workspace/paperclip && pnpm install",
-    "postStartCommand": "cd /workspace/paperclip && PAPERCLIP_HOME=/workspace/paperclip-data pnpm dev"
+    "postCreateCommand": "ln -sf /home/node/paperclip-data /workspace/paperclip-data && git clone https://github.com/paperclipai/paperclip /workspace/paperclip && cd /workspace/paperclip && pnpm install && pnpm paperclipai onboard",
+    "postStartCommand": "cd /workspace/paperclip && pnpm dev",
     "settings": {
         "telemetry.telemetryLevel": "off"
     },
