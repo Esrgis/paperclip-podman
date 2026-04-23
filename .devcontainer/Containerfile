@@ -1,11 +1,17 @@
 FROM node:22-slim
+
+# Cài đặt các công cụ hệ thống cần thiết
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+# Cài đặt pnpm và opencode-ai (để dùng free LLM cục bộ)
 RUN npm install -g pnpm opencode-ai
 
+# Đảm bảo quyền sở hữu thư mục làm việc cho user node
 RUN mkdir -p /workspace && chown -R node:node /workspace
 
 WORKDIR /workspace
 
+# Cấu hình biến môi trường mặc định
 ENV PAPERCLIP_HOME=/workspace/paperclip-data
 ENV XDG_CONFIG_HOME=/workspace/.config
 ENV LANG=C.UTF-8
@@ -13,5 +19,5 @@ ENV LC_ALL=C.UTF-8
 
 USER node
 
-# Tạo thư mục data sau khi đã switch sang user node
-RUN mkdir -p /workspace/paperclip-data
+# Lưu ý: Không tạo thư mục paperclip-data ở đây nữa. 
+# Việc này sẽ được xử lý ở bước postCreateCommand để làm symlink chuẩn.
