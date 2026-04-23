@@ -1,22 +1,29 @@
 {
-    "name": "Paperclip-Isolated-Env",
+    "name": "Paperclip-Pragmatic-Env",
     "build": {
         "dockerfile": "Containerfile"
     },
+    // Mount mã nguồn từ máy thật vào container
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
     "mounts": [
+        // Mount Docker Volume để giữ lại Database/Logs ngay cả khi xóa workspace
         "source=paperclip-data,target=/home/node/paperclip-data,type=volume"
     ],
     "containerEnv": {
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
         "XDG_CONFIG_HOME": "/workspace/.config"
     },
-    "postCreateCommand": "ln -sf /home/node/paperclip-data /workspace/paperclip-data && git clone https://github.com/paperclipai/paperclip /workspace/paperclip && cd /workspace/paperclip && pnpm install && pnpm paperclipai onboard",
+    "postCreateCommand": "rm -rf /workspace/paperclip-data && ln -s /home/node/paperclip-data /workspace/paperclip-data && git clone https://github.com/paperclipai/paperclip /workspace/paperclip && cd /workspace/paperclip && pnpm install && pnpm paperclipai onboard",
     "postStartCommand": "cd /workspace/paperclip && pnpm dev",
     "settings": {
-        "telemetry.telemetryLevel": "off"
+        "telemetry.telemetryLevel": "off",
+        // Tắt tính năng follow symlinks của trình duyệt file để nhẹ máy i3
+        "search.followSymlinks": false
     },
-    "extensions": []
+    "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+    ]
 }
