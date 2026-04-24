@@ -12,8 +12,11 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Cài đặt pnpm và opencode-ai (để dùng free LLM cục bộ)
-RUN npm install -g pnpm opencode-ai
+# Cài đặt pnpm, opencode-ai và cavemem ở dạng Global (Chạy dưới quyền root)
+RUN npm install -g pnpm opencode-ai @juliusbrussee/cavemem
+
+# Cài đặt thẳng RTK vào môi trường hệ thống để user node có thể gọi được lệnh `rtk` mọi lúc
+RUN curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 
 # Đảm bảo quyền sở hữu thư mục làm việc cho user node
 RUN mkdir -p /workspace && chown -R node:node /workspace
@@ -26,7 +29,11 @@ ENV XDG_CONFIG_HOME=/workspace/.config
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
+# Hạ quyền xuống user thường để đảm bảo an toàn bảo mật
 USER node
+
+# Khởi tạo RTK global cho user node
+RUN rtk init -g --opencode
 
 # Lưu ý: Không tạo thư mục paperclip-data ở đây nữa. 
 # Việc này sẽ được xử lý ở bước postCreateCommand để làm symlink chuẩn.
