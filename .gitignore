@@ -7,3 +7,5 @@ paperclip/node_modules/
 
 paperclip/.pnpm-store/
 
+paperclip-data/
+.pnpm-store/
