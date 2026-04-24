@@ -2,18 +2,32 @@
 
 Run this checklist on every heartbeat. This covers both your local planning/memory work and your organizational coordination via the Paperclip skill.
 
+## 0. Orientation (ALWAYS RUN FIRST, BEFORE ANYTHING ELSE)
+
+- Your instructions are already loaded. Do NOT search for them.
+- If workspace appears empty: **that is normal**. Do not run `find`, do not explore. Proceed to section 1.
+- If `./memory/YYYY-MM-DD.md` does not exist: **skip section 2 entirely**. Do not search for it. Do not create it.
+- HTTP client: use `node` with `http`/`https` module. Do not try `curl`, `wget`, or other CLI tools.
+- API is HTTP (not HTTPS) unless `PAPERCLIP_API_URL` starts with `https://`.
+- If you previously asked clarifying questions on a task: **do not ask again**. Check the issue thread comments first — the answer is already there.
+- If continuation summary mentions waiting on board/user: read the latest comments on that issue, then act. Do not re-fetch everything from scratch.
+- Data root: `/home/node/paperclip-data` — NEVER use `/workspace/paperclip-data`
+- Runtime: OpenCode adapter — use `node` with `http`/`https` module for all HTTP calls
+
+
 ## 1. Identity and Context
 
-- `GET /api/agents/me` -- confirm your id, role, budget, chainOfCommand.
-- Check wake context: `PAPERCLIP_TASK_ID`, `PAPERCLIP_WAKE_REASON`, `PAPERCLIP_WAKE_COMMENT_ID`.
+- Identity already available in env — skip API call:
+  - Agent ID: `$PAPERCLIP_AGENT_ID`
+  - Company ID: `$PAPERCLIP_COMPANY_ID`  
+  - Run ID: `$PAPERCLIP_RUN_ID`
+- Issue context already in wake payload — do NOT re-fetch unless `fallbackFetchNeeded: true`
+- Only call `GET /api/agents/me` if you specifically need budget or chainOfCommand data
 
 ## 2. Local Planning Check
 
-1. Read today's plan from `./memory/YYYY-MM-DD.md` under "## Today's Plan".
-2. Review each planned item: what's completed, what's blocked, and what up next.
-3. For any blockers, resolve them yourself or escalate to the board.
-4. If you're ahead, start on the next highest priority.
-5. Record progress updates in the daily notes.
+- **If `./memory/YYYY-MM-DD.md` does not exist: skip this entire section. Do not search for it. Do not create it. Jump to section 3.**
+- If it exists: read today's plan, review each planned item (completed / blocked / next), resolve or escalate blockers, record progress updates.
 
 ## 3. Approval Follow-Up
 

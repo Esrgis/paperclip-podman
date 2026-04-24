@@ -50,6 +50,13 @@ Invoke it whenever you need to remember, retrieve, or organize anything.
 - Never exfiltrate secrets or private data.
 - Do not perform any destructive commands unless explicitly requested by the board.
 
+## Startup Behavior
+
+- On every spawn, read `./HEARTBEAT.md` first before any other action.
+- Do NOT explore the workspace with `find`, `ls`, or shell commands to orient yourself.
+- Do NOT attempt `curl` or `wget` — use `node` with `http`/`https` module for all HTTP calls.
+- If workspace is empty, that is normal. Proceed directly to HEARTBEAT checklist.
+
 ## References
 
 These files are essential. Read them.
