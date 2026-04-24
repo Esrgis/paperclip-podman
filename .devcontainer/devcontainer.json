@@ -13,11 +13,7 @@
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
         "XDG_CONFIG_HOME": "/workspace/.config"
     },
-    "postCreateCommand": [
-        "/bin/bash",
-        "-c",
-        "rm -rf /workspace/paperclip-data && ln -s /home/node/paperclip-data /workspace/paperclip-data && echo '1. Đang clone Paperclip...' && git clone https://github.com/paperclip-ai/paperclip.git /workspace/paperclip && cd /workspace/paperclip && pnpm install && pnpm paperclipai onboard && echo '2. Cài đặt RTK...' && curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh && rtk init -g --opencode && echo '3. Tải Caveman & Copy Custom Skills...' && git clone https://github.com/JuliusBrussee/caveman.git /tmp/caveman && mkdir -p /workspace/paperclip-data/skills && cp /tmp/caveman/*.md /workspace/paperclip-data/skills/ && cp /workspace/my-skills/*.md /workspace/paperclip-data/skills/ || true && echo '4. Cài đặt Cavemem (MCP Server)...' && npm install -g @juliusbrussee/cavemem"
-    ],
+    "postCreateCommand": "bash /workspace/.devcontainer/setup.sh",
     "postStartCommand": "cd /workspace/paperclip && pnpm dev",
     "settings": {
         "telemetry.telemetryLevel": "off",
