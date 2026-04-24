@@ -15,7 +15,7 @@
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
         "XDG_CONFIG_HOME": "/workspace/.config"
     },
-    "postCreateCommand": "rm -rf /workspace/paperclip-data && ln -s /home/node/paperclip-data /workspace/paperclip-data && cd /workspace/paperclip && pnpm install && pnpm paperclipai onboard",
+    "postCreateCommand": "rm -rf /workspace/paperclip-data && ln -s /home/node/paperclip-data /workspace/paperclip-data && cd /workspace/paperclip && pnpm install && bash /workspace/scripts/patch-agents.sh && pnpm paperclipai onboard && curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh && rtk init -g --opencode",
     "postStartCommand": "cd /workspace/paperclip && pnpm dev",
     "settings": {
         "telemetry.telemetryLevel": "off",
