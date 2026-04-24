@@ -12,23 +12,16 @@ cd /workspace/paperclip
 pnpm install
 pnpm paperclipai onboard
 
-echo "3. Cài đặt RTK (Bộ nén Input Token)..."
-curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-rtk init -g --opencode
-
-echo "4. Cài đặt Cavemem (SQLite MCP Server)..."
-npm install -g @juliusbrussee/cavemem
-
-echo "5. Tải và cấu hình Skills chuẩn cho OpenCode..."
-# Tạo thư mục theo chuẩn OpenCode (đọc vào .claude)
+echo "3. Tải và cấu hình Skills chuẩn cho OpenCode..."
+# Tạo thư mục theo chuẩn OpenCode (nằm trong .claude/skills)
 mkdir -p /workspace/.claude/skills/caveman
 mkdir -p /workspace/.claude/skills/podman-env
 
-# Tải Caveman và đổi tên thành SKILL.md
+# Clone repo Caveman tạm thời và copy file, đổi tên thành SKILL.md chuẩn format
 git clone https://github.com/JuliusBrussee/caveman.git /tmp/caveman
 cp /tmp/caveman/caveman.md /workspace/.claude/skills/caveman/SKILL.md
 
-# Copy file skill nội bộ của bạn vào đúng vị trí
+# Copy file skill thiết lập môi trường (podman-env) của bạn vào
 cp /workspace/my-skills/podman-env.md /workspace/.claude/skills/podman-env/SKILL.md || echo "Cảnh báo: Chưa tìm thấy podman-env.md, bỏ qua..."
 
 echo "HOÀN TẤT SETUP MÔI TRƯỜNG!"
