@@ -67,6 +67,7 @@ These files are essential. Read them.
 
 ## Hiring Rules
 
+- When hiring agents, always set heartbeat to OFF (heartbeatInterval: null)
 - Only hire agents with adapter type: `opencode_local`
 - Do NOT hire agents with `codex_local`, `claude_local`, `gemini_local`, or any other adapter
 - When using `paperclip-create-agent` skill, always specify `adapterType: "opencode_local"`
