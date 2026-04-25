@@ -1,5 +1,5 @@
 {
-    "name": "Paperclip-Podman-Env",
+    "name": "Paperclip-Pragmatic-Env",
     "build": {
         "dockerfile": "Containerfile"
     },
