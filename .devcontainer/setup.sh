@@ -1,27 +1,41 @@
 #!/bin/bash
-# Lệnh set -e giúp script dừng ngay lập tức nếu có bất kỳ lỗi nào xảy ra
-set -e 
+set -e
 
-echo "1. Cấu hình Volume và Symlink an toàn..."
+echo "=== Paperclip Setup ==="
+
+# 1. Symlink paperclip-data
+echo "[1/5] Setup paperclip-data symlink..."
 rm -rf /workspace/paperclip-data
 ln -s /home/node/paperclip-data /workspace/paperclip-data
 
-echo "2. Tải Paperclip gốc và Cài đặt thư viện..."
-git clone https://github.com/paperclip-ai/paperclip.git /workspace/paperclip
+# 2. Clone paperclip upstream
+echo "[2/5] Clone paperclip upstream..."
+rm -rf /workspace/paperclip
+git clone https://github.com/paperclipai/paperclip.git /workspace/paperclip
+
+# 3. Install dependencies + onboard
+echo "[3/5] Install dependencies..."
 cd /workspace/paperclip
 pnpm install
 pnpm paperclipai onboard
 
-echo "3. Tải và cấu hình Skills chuẩn cho OpenCode..."
-# Tạo thư mục theo chuẩn OpenCode (nằm trong .claude/skills)
-mkdir -p /workspace/.claude/skills/caveman
-mkdir -p /workspace/.claude/skills/podman-env
+# 4. RTK init cho OpenCode
+echo "[4/5] Init RTK for OpenCode..."
+~/.local/bin/rtk init -g --opencode || echo "Warning: RTK init failed, skip"
 
-# Clone repo Caveman tạm thời và copy file, đổi tên thành SKILL.md chuẩn format
-git clone https://github.com/JuliusBrussee/caveman.git /tmp/caveman
-cp /tmp/caveman/caveman.md /workspace/.claude/skills/caveman/SKILL.md
+# 5. Caveman snippet vào OpenCode config
+echo "[5/5] Inject Caveman into OpenCode config..."
+mkdir -p /home/node/.config/opencode
+cat >> /home/node/.config/opencode/AGENTS.md << 'EOF'
 
-# Copy file skill thiết lập môi trường (podman-env) của bạn vào
-cp /workspace/my-skills/podman-env.md /workspace/.claude/skills/podman-env/SKILL.md || echo "Cảnh báo: Chưa tìm thấy podman-env.md, bỏ qua..."
+## Communication Style
 
-echo "HOÀN TẤT SETUP MÔI TRƯỜNG!"
+Terse like caveman. Technical substance exact. Only fluff die.
+Drop: articles, filler (just/really/basically), pleasantries, hedging.
+Fragments OK. Short synonyms. Code unchanged.
+Pattern: [thing] [action] [reason]. [next step].
+ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift.
+Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
+EOF
+
+echo "=== Setup complete ==="
