@@ -1,13 +1,11 @@
+# Ignore everything
+*
 
-node/
+# Except .devcontainer
+!.devcontainer/
+!.devcontainer/**
 
-.config/
-
-paperclip/node_modules/
-
-paperclip/.pnpm-store/
-
-paperclip-data/
-.pnpm-store/
-paperclip/
-
+# Except git files
+!.gitignore
+!.gitattributes
+!.README.md

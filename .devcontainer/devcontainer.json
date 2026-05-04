@@ -1,7 +1,10 @@
 {
     "name": "Paperclip-Pragmatic-Env",
     "build": {
-        "dockerfile": "Containerfile"
+        "dockerfile": "Containerfile",
+        "args": {
+            "BASE": "node:22-slim"
+        }
     },
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "workspaceFolder": "/workspace",
@@ -11,16 +14,16 @@
     ],
     "containerEnv": {
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
-        "XDG_CONFIG_HOME": "/workspace/.config"
+        "PATH": "/home/node/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     },
     "postCreateCommand": "bash /workspace/.devcontainer/setup.sh",
-    "postStartCommand": "cd /workspace/paperclip && pnpm dev",
+    "postStartCommand": "[ -d /workspace/paperclip ] && echo 'Paperclip ready' || echo 'Paperclip not ready yet'",
     "settings": {
         "telemetry.telemetryLevel": "off",
-        "search.followSymlinks": false
+        "search.followSymlinks": false,
+        "dev.containers.dockerPath": "podman"
     },
     "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "ms-vscode-remote.remote-containers"
     ]
 }

@@ -23,11 +23,10 @@ pnpm paperclipai onboard
 echo "[4/5] Init RTK for OpenCode..."
 ~/.local/bin/rtk init -g --opencode || echo "Warning: RTK init failed, skip"
 
-# 5. Caveman snippet vào OpenCode config
-echo "[5/5] Inject Caveman into OpenCode config..."
-mkdir -p /home/node/.config/opencode
-cat >> /home/node/.config/opencode/AGENTS.md << 'EOF'
-
+# 5. Inject Caveman skill
+echo "[5/5] Inject Caveman skill..."
+mkdir -p /home/node/.claude/skills/
+cat > /home/node/.claude/skills/caveman.md << 'EOF'
 ## Communication Style
 
 Terse like caveman. Technical substance exact. Only fluff die.
@@ -39,3 +38,8 @@ Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
 EOF
 
 echo "=== Setup complete ==="
+echo ""
+echo "Next: tag image as stable"
+echo "  podman images"
+echo "  podman tag <IMAGE_ID> localhost/paperclip-env:stable"
+echo "  Then update devcontainer.json args.BASE to localhost/paperclip-env:stable"

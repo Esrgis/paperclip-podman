@@ -1,6 +1,7 @@
-FROM node:22-slim
+ARG BASE=node:22-slim
+FROM ${BASE}
 
-# Cài đặt các công cụ hệ thống cần thiết
+# Cài đặt các công cụ hệ thống
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,21 +11,21 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     unzip \
     ca-certificates \
+    dos2unix \
     && rm -rf /var/lib/apt/lists/*
 
 # Cài đặt pnpm và opencode-ai
 RUN npm install -g pnpm opencode-ai
 
-# Cài đặt RTK (build time để tiết kiệm thời gian setup)
+# Cài đặt RTK
 RUN curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 
-# Đảm bảo quyền sở hữu thư mục làm việc cho user node
+# Chuẩn bị workspace
 RUN mkdir -p /workspace && chown -R node:node /workspace
 
 WORKDIR /workspace
 
 ENV PAPERCLIP_HOME=/workspace/paperclip-data
-ENV XDG_CONFIG_HOME=/workspace/.config
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
