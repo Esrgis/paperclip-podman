@@ -6,7 +6,9 @@
             "BASE": "node:22-slim"
         }
     },
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "runArgs": [
+        "--userns=keep-id"
+    ],
     "workspaceFolder": "/workspace",
     "remoteUser": "node",
     "mounts": [
@@ -14,16 +16,24 @@
     ],
     "containerEnv": {
         "PAPERCLIP_HOME": "/workspace/paperclip-data",
-        "PATH": "/home/node/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        "PATH": "/home/node/.npm-global/bin:/home/node/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     },
-    "postCreateCommand": "bash /workspace/.devcontainer/setup.sh",
-    "postStartCommand": "[ -d /workspace/paperclip ] && echo 'Paperclip ready' || echo 'Paperclip not ready yet'",
-    "settings": {
-        "telemetry.telemetryLevel": "off",
-        "search.followSymlinks": false,
-        "dev.containers.dockerPath": "podman"
-    },
-    "extensions": [
-        "ms-vscode-remote.remote-containers"
-    ]
+    "postCreateCommand": "dos2unix /workspace/.devcontainer/*.sh && bash /workspace/.devcontainer/setup.sh",
+    "postStartCommand": "[ -d /workspace/paperclip-data ] && echo 'Paperclip ready' || echo 'Paperclip not ready yet'",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "telemetry.telemetryLevel": "off",
+                "dev.containers.dockerPath": "podman",
+                "dev.containers.dockerSocketPath": "unix:///run/user/1000/podman/podman.sock",
+                "dev.containers.executeInWSL": true,
+                "dev.containers.wsldistro": "Debian",
+                "remote.WSL.initialAssumes": {
+                    "useWSL": true,
+                    "useWSLContainer": true,
+                    "useWSLDevEnvironments": true
+                }
+            }
+        }
+    }
 }

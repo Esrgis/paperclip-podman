@@ -4,6 +4,7 @@
 # Except .devcontainer
 !.devcontainer/
 !.devcontainer/**
+!.A
 
 # Except git files
 !.gitignore
